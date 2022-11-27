@@ -20,11 +20,12 @@ import javax.persistence.UniqueConstraint;
            @UniqueConstraint(columnNames = "username"),
            @UniqueConstraint(columnNames = "email")
        })
-public class Users {
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	private String username;
 	private String email;
 	private String password;
 	private boolean enabled;
@@ -44,10 +45,10 @@ public class Users {
 		this.id = id;
 	}
 	public String getUsername() {
-		return email;
+		return username;
 	}
 	public void setUsername(String username) {
-		this.email = username;
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;
@@ -66,6 +67,12 @@ public class Users {
 	}
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	
