@@ -21,15 +21,18 @@ public class UserDetailsImpl implements UserDetails {
 	  private Long id;
 
 	  private String username;
+	  
+	  private String email;
 
 	  @JsonIgnore
 	  private String password;
 
 	  private Collection<? extends GrantedAuthority> authorities;
 
-	  public UserDetailsImpl(Long id, String username, String password,
+	  public UserDetailsImpl(Long id, String username, String email, String password,
 	      Collection<? extends GrantedAuthority> authorities) {
 	    this.id = id;
+	    this.email= email;
 	    this.username = username;
 	    this.password = password;
 	    this.authorities = authorities;
@@ -43,9 +46,25 @@ public class UserDetailsImpl implements UserDetails {
 	    return new UserDetailsImpl(
 	        user.getId(), 
 	        user.getUsername(), 
-	        user.getPassword(), 
+	        user.getEmail(),
+	        user.getPassword(),
 	        authorities);
 	  }
+	  
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+
+	public String getEmail() {
+		return email;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -64,18 +83,18 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

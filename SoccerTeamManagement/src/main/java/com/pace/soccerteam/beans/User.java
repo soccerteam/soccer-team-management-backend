@@ -28,15 +28,22 @@ public class User {
 	private String username;
 	private String email;
 	private String password;
-	private boolean enabled;
+	private boolean enabled= true;
 	
 	 @ManyToMany(fetch = FetchType.LAZY)
 	 @JoinTable(name = "user_roles", 
 	             joinColumns = @JoinColumn(name = "user_id"),
 	             inverseJoinColumns = @JoinColumn(name = "role_id"))
-	  private Set<Role> roles = new HashSet<>();
+	private Set<Role> roles = new HashSet<>();
 	
-	 
+	public User() {
+	  }
+
+	public User(String username, String email, String password) {
+	    this.username = username;
+	    this.email = email;
+	    this.password = password;
+	 } 
 	
 	public long getId() {
 		return id;
