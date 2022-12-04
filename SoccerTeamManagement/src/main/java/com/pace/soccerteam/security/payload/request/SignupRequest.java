@@ -16,7 +16,33 @@ public class SignupRequest {
     
     private Set<String> role;
     
-    @NotBlank
+    
+    @Size(max = 50)
+    private String fName;
+    
+    @Size(max = 50)
+    private String lName;
+    
+    
+    
+    public String getfName() {
+		return fName;
+	}
+
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
+
+	public String getlName() {
+		return lName;
+	}
+
+	public void setlName(String lName) {
+		this.lName = lName;
+	}
+
+
+	@NotBlank
     @Size(min = 6, max = 40)
     private String password;
   
@@ -47,6 +73,7 @@ public class SignupRequest {
     public Set<String> getRole() {
       return this.role;
     }
+    
     
     public void setRole(Set<String> role) {
       this.role = role;
