@@ -23,5 +23,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		User user = userRepository.findByUsername(username).get();
 		return UserDetailsImpl.build(user);
 	}
+	
+	
+	
+	public String updateVerificationStatus(String username, String verificationCode) {
+		User user = userRepository.findByUsername(username).get();
+		if(user.getVerificationCode() == verificationCode) {
+			user.setVerified(true);
+			userRepository.save(user);
+			return "verified";
+		}
+		
+		return "user not verified";
+	}
 
 }

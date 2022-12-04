@@ -31,6 +31,7 @@ public class User {
 	private String email;
 	private String password;
 	private boolean enabled;
+	private String verificationCode;
 	private boolean verified;
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -117,5 +118,14 @@ public class User {
 	public void setVerified(boolean verified) {
 		this.verified = verified;
 	}
+
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
+	}
+	
 
 }
