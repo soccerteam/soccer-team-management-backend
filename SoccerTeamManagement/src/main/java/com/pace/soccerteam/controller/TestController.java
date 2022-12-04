@@ -1,5 +1,7 @@
 package com.pace.soccerteam.controller;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,8 +38,8 @@ public class TestController {
 	  }
 	  
 	  @GetMapping("/sendMail")
-	  public String sendMail(@RequestParam String mail) {
-		  emailService.sendSimpleMessage(mail, "test-mail", "Hey verify code");
+	  public String sendMail(@RequestParam String mail) throws MessagingException {
+		  emailService.sendSimpleMessage(mail, "test-mail", "Please verify your F1-status in order to continue with you Spring Semester.");
 		  return "mail sent";
 		  
 	  }
