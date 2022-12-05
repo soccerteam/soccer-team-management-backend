@@ -8,16 +8,18 @@ public class UserInfoResponse {
 	private String email;
 	private String firstName;
 	private String lastName;
+	private boolean verified;
 	
 	private List<String> roles;
 
-	public UserInfoResponse(Long id, String username, String email, String firstName, String lastName, List<String> roles) {
+	public UserInfoResponse(Long id, String username, String email, String firstName, String lastName, List<String> roles, Boolean verified) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.roles = roles;
+		this.verified = verified;
 	}
 
 	public Long getId() {
@@ -65,4 +67,14 @@ public class UserInfoResponse {
 	public List<String> getRoles() {
 		return roles;
 	}
+
+	public boolean isVerified() {
+		return verified;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
+	}
+	
+	
 }

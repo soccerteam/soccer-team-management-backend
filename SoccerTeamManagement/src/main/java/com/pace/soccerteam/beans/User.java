@@ -31,9 +31,7 @@ public class User {
 	@Column(nullable = false)
 	@JsonProperty(value = "username")
 	private String username;
-	@Column(name = "firstname")
 	private String firstName;
-	@Column(name = "lastname")
 	private String lastName;
 	private String email;
 	private String password;

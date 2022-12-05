@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pace.soccerteam.beans.User;
 import com.pace.soccerteam.email.EmailService;
+import com.pace.soccerteam.security.payload.response.UserInfoResponse;
 import com.pace.soccerteam.service.UserDetailsServiceImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -54,10 +55,9 @@ public class TestController {
 	  }
 	  
 	  @PostMapping("/verify")
-	  public String verifyEmail(@RequestBody User user, @RequestParam String verificationCode) {
+	  public UserInfoResponse verifyEmail(@RequestBody User user, @RequestParam String verificationCode) {
 		  String vc = verificationCode.trim();
-		  return userDetailsService.updateVerificationStatus(user.getUsername(), vc);
-		 
+		  return userDetailsService.updateVerificationStatus(user, vc);
 	  }
 
 	

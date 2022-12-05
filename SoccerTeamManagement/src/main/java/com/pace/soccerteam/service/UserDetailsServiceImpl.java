@@ -1,5 +1,11 @@
 package com.pace.soccerteam.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +14,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.pace.soccerteam.beans.ERole;
+import com.pace.soccerteam.beans.Role;
 import com.pace.soccerteam.beans.User;
 import com.pace.soccerteam.repo.UserInfoRepository;
+import com.pace.soccerteam.security.payload.response.UserInfoResponse;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -25,16 +34,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 	
 	
-	
-	public String updateVerificationStatus(String username, String verificationCode) {
-		User user = userRepository.findByUsername(username).get();
-		if(user.getVerificationCode() == verificationCode) {
-			user.setVerified(true);
-			userRepository.save(user);
-			return "verified";
+	@Transactional
+	public UserInfoResponse updateVerificationStatus(User user, String verificationCode) {
+		String username = user.getUsername();
+		User userDetails = userRepository.findByUsername(username).get();
+		if(userDetails.getVerificationCode().equals(verificationCode)) {
+			userDetails.setVerified(true);
+			userRepository.save(userDetails);
 		}
 		
-		return "user not verified";
+		  Set<Role> userRoles = userDetails.getRoles();
+		  List<String> roles = new ArrayList<String>();
+		  
+		  for (Role role : userRoles) {
+			ERole currentRole = role.getName();
+			roles.add(String.valueOf(currentRole));
+		}
+	
+		
+		return new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), userDetails.getFirstName(), userDetails.getLastName(), roles , userDetails.isVerified());
 	}
 
 }
