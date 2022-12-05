@@ -21,9 +21,20 @@ public class EmailServiceImpl implements EmailService {
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,true);
 		messageHelper.setSubject(subject);
 		messageHelper.setTo(to);
-		messageHelper.setText("verify your account");
+		messageHelper.setText(text);
 		emailSender.send(mimeMessage);
 
 	}
+	
+	@Override
+	public void sendVerificationMessage(String to, String verificationCode) throws MessagingException {
+		MimeMessage mimeMessage = emailSender.createMimeMessage();
+		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,true);
+		messageHelper.setSubject("Verify your email");
+		messageHelper.setTo(to);
+		messageHelper.setText("please verify this is the correct email address with following verification code \n" + verificationCode);
+		emailSender.send(mimeMessage);
+	}
+	
 
 }

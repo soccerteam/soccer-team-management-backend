@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pace.soccerteam.beans.ERole;
 import com.pace.soccerteam.beans.Role;
 import com.pace.soccerteam.beans.User;
+import com.pace.soccerteam.email.EmailService;
 import com.pace.soccerteam.repo.RoleRepository;
 import com.pace.soccerteam.repo.UserInfoRepository;
 import com.pace.soccerteam.security.JwtUtils;
@@ -33,6 +35,7 @@ import com.pace.soccerteam.security.payload.request.SignupRequest;
 import com.pace.soccerteam.security.payload.response.MessageResponse;
 import com.pace.soccerteam.security.payload.response.UserInfoResponse;
 import com.pace.soccerteam.service.UserDetailsImpl;
+import com.pace.soccerteam.utils.MailUtils;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -50,6 +53,9 @@ public class AuthController {
 
 	  @Autowired
 	  PasswordEncoder encoder;
+	  
+	  @Autowired
+	  EmailService emailService;
 
 	  @Autowired
 	  JwtUtils jwtUtils;
@@ -57,6 +63,7 @@ public class AuthController {
 	  @PostMapping("/signin")
 	  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
+		  
 	    Authentication authentication = authenticationManager
 	        .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -69,18 +76,23 @@ public class AuthController {
 	    List<String> roles = userDetails.getAuthorities().stream()
 	        .map(item -> item.getAuthority())
 	        .collect(Collectors.toList());
-
+	    
+	    if(!userDetails.isVerified()) {
+	    	return ResponseEntity.badRequest().body(new MessageResponse("Error: User is not verified! Please check your mail to verify"));
+	   
+	    }
+	    
 	    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-	        .body(new UserInfoResponse(userDetails.getId(),
-	                                   userDetails.getUsername(),
-	                                   userDetails.getEmail(),
-	                                   userDetails.getFirstName(),
-	                                   userDetails.getLastName(),
-	                                   roles));
+		        .body(new UserInfoResponse(userDetails.getId(),
+		                                   userDetails.getUsername(),
+		                                   userDetails.getEmail(),
+		                                   userDetails.getFirstName(),
+		                                   userDetails.getLastName(),
+		                                   roles));
 	  }
 	  
 		@PostMapping("/signup")
-		public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+		public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws MessagingException {
 			if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
 			}
@@ -124,6 +136,8 @@ public class AuthController {
 			}
 
 			user.setRoles(roles);
+			user.setVerificationCode(MailUtils.generateVerificationCode());
+			emailService.sendVerificationMessage(user.getEmail(), user.getVerificationCode());
 			userRepository.save(user);
 
 			return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

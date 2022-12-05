@@ -51,7 +51,8 @@ public class TestController {
 	  
 	  @PostMapping("/verify")
 	  public String verifyEmail(String username, @RequestParam String verificationCode) {
-		  return userDetailsService.updateVerificationStatus(username, verificationCode);
+		  String vc = verificationCode.trim();
+		  return userDetailsService.updateVerificationStatus(username, vc);
 		 
 	  }
 
