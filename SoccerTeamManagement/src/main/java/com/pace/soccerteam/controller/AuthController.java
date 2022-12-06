@@ -107,10 +107,10 @@ public class AuthController {
 			// Create new user's account 
 			User user = new	User(signUpRequest.getUsername(), signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
 
-			if(signUpRequest.getfName() ==null) {
+			if(signUpRequest.getfName() != null) {
 				user.setFirstName(signUpRequest.getfName());
 			}
-			if(signUpRequest.getlName() ==null) {
+			if(signUpRequest.getlName() != null) {
 			user.setLastName(signUpRequest.getlName());
 			}
 	
