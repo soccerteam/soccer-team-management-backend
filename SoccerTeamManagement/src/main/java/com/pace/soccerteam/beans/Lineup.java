@@ -3,12 +3,13 @@ package com.pace.soccerteam.beans;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +20,7 @@ public class Lineup {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lineup")
 	private Set<User> users = new HashSet<>();
 
 	public long getId() {
@@ -37,6 +38,14 @@ public class Lineup {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
+	
+	
+
+	
+
+	
+
+	
 	
 
 }

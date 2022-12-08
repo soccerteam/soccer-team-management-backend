@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -43,7 +44,11 @@ public class User {
 	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
-
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "user_lineup", joinColumns = @JoinColumn(name ="user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "lineup_id", referencedColumnName = "id"))
+	private Set<Lineup> lineup = new HashSet<>();
+	
 	public User() {
 	}
 
@@ -132,6 +137,16 @@ public class User {
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
 	}
+
+	public Set<Lineup> getLineup() {
+		return lineup;
+	}
+
+	public void setLineup(Set<Lineup> lineup) {
+		this.lineup = lineup;
+	}
+	
 	
 
+	
 }

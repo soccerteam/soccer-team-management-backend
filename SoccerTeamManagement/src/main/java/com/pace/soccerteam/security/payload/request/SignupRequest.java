@@ -18,27 +18,27 @@ public class SignupRequest {
     
     
     @Size(max = 50)
-    private String fName;
+    private String firstName;
     
     @Size(max = 50)
-    private String lName;
+    private String lastName;
     
     
     
     public String getfName() {
-		return fName;
+		return firstName;
 	}
 
 	public void setfName(String fName) {
-		this.fName = fName;
+		this.firstName = fName;
 	}
 
 	public String getlName() {
-		return lName;
+		return lastName;
 	}
 
 	public void setlName(String lName) {
-		this.lName = lName;
+		this.lastName = lName;
 	}
 
 
