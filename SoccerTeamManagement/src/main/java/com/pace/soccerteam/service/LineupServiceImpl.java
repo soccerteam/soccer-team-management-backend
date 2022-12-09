@@ -40,7 +40,7 @@ public class LineupServiceImpl implements LineupService{
 	}
 
 	@Override
-	public List<Lineup> getList() {
+	public List<Lineup> getAllLineups() {
 		// TODO Auto-generated method stub
 		return lineupRepository.findAll();
 	}

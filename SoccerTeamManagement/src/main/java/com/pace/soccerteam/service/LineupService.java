@@ -17,6 +17,6 @@ public interface LineupService {
 	
 	public Lineup getLineupById(long id);
 	
-	public List<Lineup> getList();
+	List<Lineup> getAllLineups();
 
 }

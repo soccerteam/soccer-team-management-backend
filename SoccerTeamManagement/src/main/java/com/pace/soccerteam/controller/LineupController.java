@@ -49,20 +49,17 @@ public class LineupController {
 		return new LineupResponse(lineupService.getLineupById(lineup.getId()));
 	}
 	
-	@GetMapping("/")
-	public AllLineupsResponse getAllLineup() {
+	@GetMapping("/lineups")
+	public List<LineupResponse> getAllLineup() {
 		
+		List<Lineup> lineupList = lineupService.getAllLineups();
+		List<LineupResponse> lineupResponseList = new ArrayList<LineupResponse>();
+		for (Lineup lineup : lineupList) {
+			LineupResponse lineupResponse = new LineupResponse(lineup);
+			lineupResponseList.add(lineupResponse);
+		}
 		
-		//Set <Lineup> lineups = lineupService.getAllLineUps();
-		
-//		List<Lineup> lUps = new ArrayList();
-//		
-//		lineups.forEach(lineup ->{
-//			lUps.add(new Lineup(lineup.getId(), lineup.getUsers(), lineup.getMatch()));
-//		});
-		
-		
-		return new AllLineupsResponse(lineupService.getList());
+		return lineupResponseList;
 	}
 	
 	
