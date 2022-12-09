@@ -17,6 +17,19 @@ import javax.persistence.Table;
 @Table(name = "lineup")
 public class Lineup {
 	
+	
+	
+	public Lineup(long id, Set<User> users, Set<Match> match) {
+		super();
+		this.id = id;
+		this.users = users;
+		this.match = match;
+	}
+	
+	public Lineup() {
+		
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -41,6 +54,14 @@ public class Lineup {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+
+	public Set<Match> getMatch() {
+		return match;
+	}
+
+	public void setMatch(Set<Match> match) {
+		this.match = match;
 	}
 	
 	

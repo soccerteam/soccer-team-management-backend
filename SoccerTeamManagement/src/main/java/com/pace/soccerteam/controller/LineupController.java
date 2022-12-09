@@ -1,11 +1,13 @@
 package com.pace.soccerteam.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import com.pace.soccerteam.beans.Lineup;
 import com.pace.soccerteam.beans.User;
 import com.pace.soccerteam.repo.UserInfoRepository;
 import com.pace.soccerteam.security.payload.request.LineupRequest;
+import com.pace.soccerteam.security.payload.response.AllLineupsResponse;
 import com.pace.soccerteam.security.payload.response.LineupResponse;
 import com.pace.soccerteam.security.payload.response.UserInfoResponse;
 import com.pace.soccerteam.service.LineupService;
@@ -44,6 +47,22 @@ public class LineupController {
 		userRepository.saveAllAndFlush(getPlayersForLineup(linkLineup, lineup));
 		
 		return new LineupResponse(lineupService.getLineupById(lineup.getId()));
+	}
+	
+	@GetMapping("/")
+	public AllLineupsResponse getAllLineup() {
+		
+		
+		//Set <Lineup> lineups = lineupService.getAllLineUps();
+		
+//		List<Lineup> lUps = new ArrayList();
+//		
+//		lineups.forEach(lineup ->{
+//			lUps.add(new Lineup(lineup.getId(), lineup.getUsers(), lineup.getMatch()));
+//		});
+		
+		
+		return new AllLineupsResponse(lineupService.getList());
 	}
 	
 	

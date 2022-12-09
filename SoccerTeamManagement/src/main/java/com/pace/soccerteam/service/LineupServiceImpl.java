@@ -1,5 +1,6 @@
 package com.pace.soccerteam.service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,5 +38,12 @@ public class LineupServiceImpl implements LineupService{
 	public Lineup getLineupById(long id) {
 		return lineupRepository.findLineupById(id);
 	}
+
+	@Override
+	public List<Lineup> getList() {
+		// TODO Auto-generated method stub
+		return lineupRepository.findAll();
+	}
+
 
 }

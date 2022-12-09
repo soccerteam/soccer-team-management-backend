@@ -1,5 +1,6 @@
 package com.pace.soccerteam.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -15,5 +16,7 @@ public interface LineupService {
 	public Lineup saveLineup(Lineup lineup);
 	
 	public Lineup getLineupById(long id);
+	
+	public List<Lineup> getList();
 
 }

@@ -15,8 +15,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.pace.soccerteam.service.UserDetailsServiceImpl;
+
 
 @Configuration
 @EnableWebSecurity
@@ -54,8 +56,8 @@ public class WebSecurityConfiguration {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.cors()
-		.and().
+		http
+		.
 		csrf()
 		.disable()
 		.exceptionHandling()
@@ -66,6 +68,10 @@ public class WebSecurityConfiguration {
 				.and()
 				.authorizeRequests()
 				.antMatchers("/api/auth/**")
+				.permitAll()
+				.antMatchers("/api/player/**")
+				.permitAll()
+				.antMatchers("/api/lineup/**")
 				.permitAll()
 				.antMatchers("/api/test/**")
 				.permitAll()

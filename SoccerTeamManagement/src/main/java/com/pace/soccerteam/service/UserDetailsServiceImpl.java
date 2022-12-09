@@ -42,7 +42,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
 
-
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -51,18 +50,34 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 
 	@Transactional
-	public UserInfoResponse updatePassword(String username, String verificationCode, String password) {
+	public UserInfoResponse updatePassword(String username, String verificationCode, String password, String fname, String lname) {
 
 		String newPassword = password.trim();
 
 		User userDetails = userRepository.findByUsername(username.trim()).get();
+		
+		
+		if (userDetails.getFirstName() == null) {
+			userDetails.setFirstName(fname);
+		}
+		if (userDetails.getLastName() == null) {
+			userDetails.setLastName(lname);
+		}
+		
+		
+		
+		
 		if (userDetails.getVerificationCode().equals(verificationCode)) {
 
 			userDetails.setVerified(true);
-			userDetails.setPassword(newPassword);
+			userDetails.setPassword(password);
+			userDetails.setVerificationCode(null);
 
 			userRepository.save(userDetails);
 		}
+		
+		
+	
 
 		Set<Role> userRoles = userDetails.getRoles();
 		List<String> roles = new ArrayList<String>();

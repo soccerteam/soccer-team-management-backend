@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +39,8 @@ public class TestController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
-
+	@Autowired
+	PasswordEncoder encoder;
 	
 	
 	@Autowired
@@ -92,6 +94,19 @@ public class TestController {
 	  public UserInfoResponse verifyUpdatePassword(@RequestBody ObjectNode json) {
 		  // @RequestBody User user, @RequestBody String verificationCode, @RequestBody String password
 		  
+		  String fname = "";
+		  String lname ="";
+try {
+	  if (json.get("firstName").asText() != null) {
+			fname = json.get("firstName").asText();
+		}
+		if (json.get("lastName").asText() != null) {
+			lname = json.get("lastName").asText();
+		}
+		
+}catch(Exception e) {
+	e.printStackTrace();
+}
 		  
 		  String user = json.get("username").asText();
 		  String vcode = json.get("verificationCode").asText();
@@ -99,7 +114,7 @@ public class TestController {
 
 		  
 		  
-		  return userDetailsService.updatePassword(user, vcode, newPassword);
+		  return userDetailsService.updatePassword(user, vcode,  encoder.encode(newPassword), fname, lname);
 	  }
 	
 }
