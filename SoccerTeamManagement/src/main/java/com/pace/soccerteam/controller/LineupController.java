@@ -15,6 +15,7 @@ import com.pace.soccerteam.beans.Lineup;
 import com.pace.soccerteam.beans.User;
 import com.pace.soccerteam.repo.UserInfoRepository;
 import com.pace.soccerteam.security.payload.request.LineupRequest;
+import com.pace.soccerteam.security.payload.response.LineupResponse;
 import com.pace.soccerteam.security.payload.response.UserInfoResponse;
 import com.pace.soccerteam.service.LineupService;
 import com.pace.soccerteam.utils.UserJsonUtils;
@@ -33,17 +34,16 @@ public class LineupController {
 	
 
 	@PostMapping("/create")
-	public List<UserInfoResponse> createLineup(@RequestBody LineupRequest lineupRequest) {
+	public LineupResponse createLineup(@RequestBody LineupRequest lineupRequest) {
+		
 		Lineup lineup = new Lineup();
 		Set <User> lineupUsers = lineupService.getUsersFromRequest(lineupRequest.getUsers());
 		lineup.setUsers(lineupUsers);
 		lineupService.saveLineup(lineup);
 		Set<User> linkLineup = lineup.getUsers();
-		
 		userRepository.saveAllAndFlush(getPlayersForLineup(linkLineup, lineup));
 		
-		
-		return UserJsonUtils.createUserLineupResponse(lineupService.getLineupById(lineup.getId()));
+		return new LineupResponse(lineupService.getLineupById(lineup.getId()));
 	}
 	
 	

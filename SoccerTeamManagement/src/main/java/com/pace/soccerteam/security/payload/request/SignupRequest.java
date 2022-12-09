@@ -25,19 +25,19 @@ public class SignupRequest {
     
     
     
-    public String getfName() {
+    public String getFirstName() {
 		return firstName;
 	}
 
-	public void setfName(String fName) {
+	public void setFirstName(String fName) {
 		this.firstName = fName;
 	}
 
-	public String getlName() {
+	public String getLastName() {
 		return lastName;
 	}
 
-	public void setlName(String lName) {
+	public void setLastName(String lName) {
 		this.lastName = lName;
 	}
 

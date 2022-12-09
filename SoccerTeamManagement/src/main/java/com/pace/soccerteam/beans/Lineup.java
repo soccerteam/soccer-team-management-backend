@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,6 +23,9 @@ public class Lineup {
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lineup")
 	private Set<User> users = new HashSet<>();
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "lineup", fetch = FetchType.LAZY)
+	private Set<Match> match = new HashSet<>();
 
 	public long getId() {
 		return id;

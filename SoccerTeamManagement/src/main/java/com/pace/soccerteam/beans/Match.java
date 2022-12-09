@@ -19,7 +19,7 @@ public class Match {
 	private long dateTime;
 	private String status;
 	private String type;
-	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = "lineup_id")
 	private Lineup lineup;
 	private String venue;
