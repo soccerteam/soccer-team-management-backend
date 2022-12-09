@@ -56,8 +56,12 @@ public class MatchServiceImpl implements MatchService {
 		List<Match> matchList = matchRepository.findAll();
 		List<MatchResponse> matchResponseList = new ArrayList<>();
 		for (Match match : matchList) {
+			MatchResponse matchResponse = new MatchResponse(match.getId(), match.getDateTime(), match.getStatus(), match.getType(), match.getVenue(), match.getHomeScore(), match.getOppositionScore(), null);
+			if(match.getLineup()!= null) {
 			LineupResponse lineupResponse = new LineupResponse(match.getLineup());
-			MatchResponse matchResponse = new MatchResponse(match.getId(), match.getDateTime(), match.getStatus(), match.getType(), match.getVenue(), match.getHomeScore(), match.getOppositionScore(), lineupResponse); 
+			matchResponse.setLineupResponse(lineupResponse);
+			
+			}
 			matchResponseList.add(matchResponse);
 		}
 		return matchResponseList;

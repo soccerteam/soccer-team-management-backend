@@ -29,6 +29,71 @@ public class MatchResponse {
 		this.oppositionScore = oppositionScore;
 		this.lineupResponse = lineupResponse;
 	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public long getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(long dateTime) {
+		this.dateTime = dateTime;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getVenue() {
+		return venue;
+	}
+
+	public void setVenue(String venue) {
+		this.venue = venue;
+	}
+
+	public int getHomeScore() {
+		return homeScore;
+	}
+
+	public void setHomeScore(int homeScore) {
+		this.homeScore = homeScore;
+	}
+
+	public int getOppositionScore() {
+		return oppositionScore;
+	}
+
+	public void setOppositionScore(int oppositionScore) {
+		this.oppositionScore = oppositionScore;
+	}
+
+	public LineupResponse getLineupResponse() {
+		return lineupResponse;
+	}
+
+	public void setLineupResponse(LineupResponse lineupResponse) {
+		this.lineupResponse = lineupResponse;
+	}
+	
 	
 	
 	

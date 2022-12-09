@@ -28,7 +28,7 @@ public class MatchController {
 	@Autowired
 	private MatchService matchService;
 
-	@GetMapping("/getMatches")
+	@GetMapping("/matches")
 	public List<MatchResponse> getAllMatches() {
 		return matchService.getAllMatches();
 	}
