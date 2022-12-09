@@ -19,6 +19,7 @@ import com.pace.soccerteam.beans.Role;
 import com.pace.soccerteam.beans.User;
 import com.pace.soccerteam.repo.UserInfoRepository;
 import com.pace.soccerteam.security.payload.response.UserInfoResponse;
+import com.pace.soccerteam.security.payload.response.UserVerifyResponse;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -35,11 +36,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	
 	@Transactional
-	public UserInfoResponse updateVerificationStatus(User user, String verificationCode) {
+	public UserInfoResponse updatePassword(User user, String verificationCode, String password) {
 		String username = user.getUsername();
+		  String newPassword = password.trim();
+		  
+		  
+		  
 		User userDetails = userRepository.findByUsername(username).get();
 		if(userDetails.getVerificationCode().equals(verificationCode)) {
+			
 			userDetails.setVerified(true);
+			userDetails.setPassword(newPassword);
+			
 			userRepository.save(userDetails);
 		}
 		
@@ -54,5 +62,35 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		
 		return new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), userDetails.getFirstName(), userDetails.getLastName(), roles , userDetails.isVerified());
 	}
+	
+	
+	@Transactional
+	public UserVerifyResponse updateVerificationStatus(User user, String verificationCode) {
+		String newUsername = user.getUsername().trim();
+		User userDetails = userRepository.findByUsername(newUsername).get();
+		
+		
+		if((userDetails.getVerificationCode().equals(userDetails.getVerificationCode()))) {
+			//userDetails.setVerified(true);
+			//userRepository.save(userDetails);
+			
+			return new UserVerifyResponse(true);
+			
+		}else {
+			return new UserVerifyResponse(false);
+
+		}
+		
+//		  Set<Role> userRoles = userDetails.getRoles();
+//		  List<String> roles = new ArrayList<String>();
+//		  
+//		  for (Role role : userRoles) {
+//			ERole currentRole = role.getName();
+//			roles.add(String.valueOf(currentRole));
+//		}
+//	
+	
+	}
+	
 
 }
