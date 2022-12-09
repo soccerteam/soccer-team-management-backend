@@ -34,6 +34,7 @@ import com.pace.soccerteam.security.payload.request.LoginRequest;
 import com.pace.soccerteam.security.payload.request.SignupRequest;
 import com.pace.soccerteam.security.payload.response.MessageResponse;
 import com.pace.soccerteam.security.payload.response.UserInfoResponse;
+import com.pace.soccerteam.security.payload.response.UserInfoWithTokenResponse;
 import com.pace.soccerteam.service.UserDetailsImpl;
 import com.pace.soccerteam.utils.MailUtils;
 
@@ -83,7 +84,8 @@ public class AuthController {
 	    }
 	    
 	    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-		        .body(new UserInfoResponse(userDetails.getId(),
+		        .body(new UserInfoWithTokenResponse(jwtCookie.toString(),
+		        		userDetails.getId(),
 		                                   userDetails.getUsername(),
 		                                   userDetails.getEmail(),
 		                                   userDetails.getFirstName(),
