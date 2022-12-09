@@ -1,5 +1,8 @@
 package com.pace.soccerteam.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,6 +48,19 @@ public class MatchServiceImpl implements MatchService {
 		Match match = matchRepository.findById(id).get();
 		Lineup lineup = match.getLineup();
 		return new LineupResponse(lineup);
+	}
+	
+	@Override
+	public List<MatchResponse> getAllMatches() {
+		
+		List<Match> matchList = matchRepository.findAll();
+		List<MatchResponse> matchResponseList = new ArrayList<>();
+		for (Match match : matchList) {
+			LineupResponse lineupResponse = new LineupResponse(match.getLineup());
+			MatchResponse matchResponse = new MatchResponse(match.getId(), match.getDateTime(), match.getStatus(), match.getType(), match.getVenue(), match.getHomeScore(), match.getOppositionScore(), lineupResponse); 
+			matchResponseList.add(matchResponse);
+		}
+		return matchResponseList;
 	}
 
 }
