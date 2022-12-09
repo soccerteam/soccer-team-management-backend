@@ -27,7 +27,7 @@ public class Match {
 	private int homeScore;
 	private int oppositionScore;
 	@OneToOne(mappedBy = "match")
-	private Statistics statistics;
+	private MatchStatistics statistics;
 	
 	public Match() {
 		
@@ -97,11 +97,11 @@ public class Match {
 		this.venue = venue;
 	}
 
-	public Statistics getStatistics() {
+	public MatchStatistics getMatchStatistics() {
 		return statistics;
 	}
 
-	public void setStatistics(Statistics statistics) {
+	public void setMatchStatistics(MatchStatistics statistics) {
 		this.statistics = statistics;
 	}
 	

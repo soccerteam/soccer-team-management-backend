@@ -16,8 +16,8 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="statistics")
-public class Statistics {
+@Table(name="matchstatistics")
+public class MatchStatistics {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,16 +27,12 @@ public class Statistics {
 	@JoinColumn(name="match_id")
 	private Match match;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id")
-	private User user;
-	
 	@ElementCollection
 	private List<String> fouls = new ArrayList<>();
 	
 	private String score;
 	
-	public Statistics () {
+	public MatchStatistics () {
 		
 	}
 
@@ -54,14 +50,6 @@ public class Statistics {
 
 	public void setMatch(Match match) {
 		this.match = match;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public List<String> getFouls() {
