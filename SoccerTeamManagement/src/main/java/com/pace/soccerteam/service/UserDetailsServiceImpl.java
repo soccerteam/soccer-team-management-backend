@@ -61,6 +61,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 		
 		return new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), userDetails.getFirstName(), userDetails.getLastName(), roles , userDetails.isVerified());
+	
 	}
 	
 	

@@ -12,7 +12,13 @@ public class UserInfoResponse {
 	
 	private List<String> roles;
 
-	public UserInfoResponse(Long id, String username, String email, String firstName, String lastName, List<String> roles, Boolean verified) {
+	public UserInfoResponse(Long id,
+			String username, 
+			String email,
+			String firstName, 
+			String lastName, 
+			List<String> roles, 
+			Boolean verified) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
