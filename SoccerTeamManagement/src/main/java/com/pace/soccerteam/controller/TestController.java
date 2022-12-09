@@ -80,10 +80,17 @@ public class TestController {
 
 	  
 	  @PostMapping("/updatePassword")
-	  public UserInfoResponse verifyUpdatePassword(@RequestBody User user, @RequestBody String verificationCode, @RequestBody String password ) {
-		  String vc = verificationCode.trim();
-		  String newPassword = password.trim();
-		  return userDetailsService.updatePassword(user, vc, newPassword);
+	  public UserInfoResponse verifyUpdatePassword(@RequestBody ObjectNode json) {
+		  // @RequestBody User user, @RequestBody String verificationCode, @RequestBody String password
+		  
+		  
+		  String user = json.get("username").asText();
+		  String vcode = json.get("verificationCode").asText();
+		  String newPassword = json.get("password").asText();
+
+		  
+		  
+		  return userDetailsService.updatePassword(user, vcode, newPassword);
 	  }
 	
 }

@@ -36,13 +36,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	
 	@Transactional
-	public UserInfoResponse updatePassword(User user, String verificationCode, String password) {
-		String username = user.getUsername();
+	public UserInfoResponse updatePassword(String username, String verificationCode, String password) {
+		
 		  String newPassword = password.trim();
 		  
 		  
 		  
-		User userDetails = userRepository.findByUsername(username).get();
+		User userDetails = userRepository.findByUsername(username.trim()).get();
 		if(userDetails.getVerificationCode().equals(verificationCode)) {
 			
 			userDetails.setVerified(true);
