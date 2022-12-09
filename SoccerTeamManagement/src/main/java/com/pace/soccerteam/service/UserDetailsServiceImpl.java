@@ -70,7 +70,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		User userDetails = userRepository.findByUsername(newUsername).get();
 		
 		
-		if((userDetails.getVerificationCode().equals(userDetails.getVerificationCode()))) {
+		if((userDetails.getVerificationCode().equals(verificationCode))) {
 			//userDetails.setVerified(true);
 			//userRepository.save(userDetails);
 			
