@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -25,6 +26,8 @@ public class Match {
 	private String venue;
 	private int homeScore;
 	private int oppositionScore;
+	@OneToOne(mappedBy = "match")
+	private Statistics statistics;
 	
 	public Match() {
 		
@@ -93,8 +96,14 @@ public class Match {
 	public void setVenue(String venue) {
 		this.venue = venue;
 	}
-	
-	
+
+	public Statistics getStatistics() {
+		return statistics;
+	}
+
+	public void setStatistics(Statistics statistics) {
+		this.statistics = statistics;
+	}
 	
 
 }

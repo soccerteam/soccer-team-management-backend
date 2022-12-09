@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -48,6 +49,9 @@ public class User {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "user_lineup", joinColumns = @JoinColumn(name ="user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "lineup_id", referencedColumnName = "id"))
 	private Set<Lineup> lineup = new HashSet<>();
+	
+	@OneToOne(mappedBy = "user")
+	private Statistics statistics;
 	
 	public User() {
 	}
