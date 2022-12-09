@@ -2,10 +2,12 @@ package com.pace.soccerteam.controller;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pace.soccerteam.beans.ERole;
 import com.pace.soccerteam.beans.Role;
 import com.pace.soccerteam.beans.User;
@@ -32,6 +39,7 @@ import com.pace.soccerteam.repo.UserInfoRepository;
 import com.pace.soccerteam.security.JwtUtils;
 import com.pace.soccerteam.security.payload.request.LoginRequest;
 import com.pace.soccerteam.security.payload.request.SignupRequest;
+import com.pace.soccerteam.security.payload.response.InviteUserResponse;
 import com.pace.soccerteam.security.payload.response.MessageResponse;
 import com.pace.soccerteam.security.payload.response.UserInfoResponse;
 import com.pace.soccerteam.security.payload.response.UserInfoWithTokenResponse;
@@ -154,4 +162,131 @@ public class AuthController {
 		        .body(new MessageResponse("You've been signed out!"));
 		  }
 
+		
+		  @PostMapping("/invite")
+		  public InviteUserResponse invite(@RequestBody ObjectNode json) throws JsonMappingException, JsonProcessingException {
+			  
+			  String email = json.get("email").asText();
+			  JsonNode rolesArray=
+						 new ObjectMapper( ).readTree(json.toString()).get("roles");
+			
+
+				
+					if (userRepository.existsByEmail(email)) {
+
+						return new InviteUserResponse(false, email, "User already invited");
+
+						// return ResponseEntity.badRequest().body(new MessageResponse("Error: Username
+						// is already taken!"));
+					} else {
+
+						Random r = new Random();
+						User user = new User(email, email, encoder.encode(r.nextInt() + ""));
+
+						Set<Role> roles = new HashSet<>();
+					
+					
+						if( rolesArray!=null && rolesArray.isArray()) {
+							
+					
+
+							Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+									.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+							roles.add(userRole);
+							
+					
+							rolesArray.forEach(role -> {
+								switch (role.asText()) {
+								
+								case "admin":
+									Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+											.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+									roles.add(adminRole);
+									
+									
+
+									break;
+								case "player":
+
+									Role playerRole = roleRepository.findByName(ERole.ROLE_PLAYER)
+											.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+									roles.add(playerRole);
+									
+								
+
+									break;
+									
+									
+								case "coach":
+
+									Role coachRole = roleRepository.findByName(ERole.ROLE_COACH)
+											.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+									roles.add(coachRole);
+
+									
+									
+									
+									break;
+									
+									
+									
+									
+									//TODO(CHANGE to STAFF);
+								case "staff":
+
+									Role staffRole = roleRepository.findByName(ERole.ROLE_USER)
+											.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+									roles.add(staffRole);
+
+									break;
+									
+								default:
+									Role uuserRole = roleRepository.findByName(ERole.ROLE_USER)
+											.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+									roles.add(uuserRole);
+								}
+							});
+						}else {
+							Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+									.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+							roles.add(userRole);
+							
+							roles.add(roleRepository.findByName(ERole.ROLE_PLAYER)
+									.orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+
+						}
+						
+
+						user.setRoles(roles);
+						user.setVerificationCode(MailUtils.generateVerificationCode());
+						userRepository.save(user);
+						
+						
+						try {
+							emailService.sendVerificationMessage(user.getEmail(), user.getVerificationCode());
+							return new InviteUserResponse(true, email, "");
+						} catch (MessagingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							return new InviteUserResponse(false, email, "Unable to send an mail");
+						}
+						
+						
+					}
+
+					// TODO Auto-generated method stub
+
+					// emailService.sendSimpleMessage(mail, "test-mail", "Please verify your
+					// F1-status in order to continue with you Spring Semester.");
+
+					
+				}
+
+				
+
+			  
+			  
+		  
+		  
+		  
 }

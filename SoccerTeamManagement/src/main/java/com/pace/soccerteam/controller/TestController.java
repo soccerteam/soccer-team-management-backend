@@ -1,5 +1,7 @@
 package com.pace.soccerteam.controller;
 
+import java.lang.reflect.Array;
+
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 
@@ -17,10 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pace.soccerteam.beans.User;
 import com.pace.soccerteam.email.EmailService;
 import com.pace.soccerteam.security.AuthEntryPointExceptionHandler;
+import com.pace.soccerteam.security.payload.response.InviteUserResponse;
 import com.pace.soccerteam.security.payload.response.UserInfoResponse;
 import com.pace.soccerteam.security.payload.response.UserVerifyResponse;
 import com.pace.soccerteam.service.UserDetailsServiceImpl;
@@ -33,8 +39,7 @@ public class TestController {
 	private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
 
-	@Autowired
-	private EmailService emailService;
+	
 	
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
@@ -56,12 +61,16 @@ public class TestController {
 	    return "Admin Board.";
 	  }
 	  
-	  @GetMapping("/sendMail")
-	  public String sendMail(@RequestParam String mail) throws MessagingException {
-		  emailService.sendSimpleMessage(mail, "test-mail", "Please verify your F1-status in order to continue with you Spring Semester.");
-		  return "mail sent";
-		  
-	  }
+//	  @GetMapping("/sendMail")
+//	  public String sendMail(@RequestParam String mail) throws MessagingException {
+//		  emailService.sendSimpleMessage(mail, "test-mail", "Please verify your F1-status in order to continue with you Spring Semester.");
+//		  return "mail sent";
+//		  
+//	  }
+	  
+	  
+	
+	  
 	  
 	  @PostMapping("/verify")
 	  public UserVerifyResponse verify(@RequestBody ObjectNode json) {

@@ -34,46 +34,79 @@ public class PlayerController {
 
 	@Autowired
 	private MatchService matchService;
-	
+
 	@Autowired
 	private LineupService lineupService;
-	
+
 	@Autowired
 	private UserInfoRepository userInfoRepository;
-	
+
 	@Autowired
 	private PlayerService playerServices;
 
-	
-	//@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	  @GetMapping("/search")
-	  public PlayerResponse searchPlayers(@RequestParam String query) {
-		  
-		  
-		  List<User> users = userInfoRepository.findUserByQueryConatining(query);
-		  List<UserInfoResponse> userInfoResponse = new ArrayList<>();
-		  
-for (User userDetails : users) {
-	
-	  Set<Role> userRoles = userDetails.getRoles();
-	  List<String> roles = new ArrayList<String>();
-	  
-	  for (Role role : userRoles) {
-		ERole currentRole = role.getName();
-		roles.add(String.valueOf(currentRole));
+	// @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@GetMapping("/search")
+	public PlayerResponse searchPlayers(@RequestParam String query) {
+
+		List<User> users = userInfoRepository.findUserByQueryConatining(query);
+		List<UserInfoResponse> userInfoResponse = new ArrayList<>();
+
+		for (User userDetails : users) {
+
+			Set<Role> userRoles = userDetails.getRoles();
+			List<String> roles = new ArrayList<String>();
+
+			for (Role role : userRoles) {
+				ERole currentRole = role.getName();
+				roles.add(String.valueOf(currentRole));
+			}
+
+			userInfoResponse
+					.add(new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(),
+							userDetails.getFirstName(), userDetails.getLastName(), roles, userDetails.isVerified()));
+		}
+
+		// return new UserInfoResponse(userDetails.getId(), userDetails.getUsername(),
+		// userDetails.getEmail(), userDetails.getFirstName(),
+		// userDetails.getLastName(), roles , userDetails.isVerified());
+
+		return new PlayerResponse(userInfoResponse);
+		// userInfoRepository.findUserByQuery(query)
 	}
-
-	  
-	  
-	userInfoResponse.add(new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), userDetails.getFirstName(), userDetails.getLastName(), roles , userDetails.isVerified()));
-}
-				  
-				  //		return new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), userDetails.getFirstName(), userDetails.getLastName(), roles , userDetails.isVerified());
-					
-		  return new PlayerResponse(userInfoResponse);
-		  //userInfoRepository.findUserByQuery(query)
-	  }
-
 	
 	
+	
+//	// @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+//	@PostMapping("/invite")
+//	public PlayerResponse invitePlayer(@RequestParam String query) {
+//
+//		List<User> users = userInfoRepository.findUserByQueryConatining(query);
+//		List<UserInfoResponse> userInfoResponse = new ArrayList<>();
+//
+//		for (User userDetails : users) {
+//
+//			Set<Role> userRoles = userDetails.getRoles();
+//			List<String> roles = new ArrayList<String>();
+//
+//			for (Role role : userRoles) {
+//				ERole currentRole = role.getName();
+//				roles.add(String.valueOf(currentRole));
+//			}
+//
+//			userInfoResponse
+//					.add(new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(),
+//							userDetails.getFirstName(), userDetails.getLastName(), roles, userDetails.isVerified()));
+//		}
+//
+//		// return new UserInfoResponse(userDetails.getId(), userDetails.getUsername(),
+//		// userDetails.getEmail(), userDetails.getFirstName(),
+//		// userDetails.getLastName(), roles , userDetails.isVerified());
+//
+//		return new PlayerResponse(userInfoResponse);
+//		// userInfoRepository.findUserByQuery(query)
+//	}
+	
+	
+	
+
 }
