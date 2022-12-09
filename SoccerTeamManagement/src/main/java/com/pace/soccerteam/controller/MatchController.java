@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pace.soccerteam.beans.Match;
 import com.pace.soccerteam.repo.MatchRepository;
+import com.pace.soccerteam.security.payload.response.LineupResponse;
+import com.pace.soccerteam.service.MatchService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -21,6 +23,9 @@ public class MatchController {
 	
 	@Autowired
 	private MatchRepository matchRepository;
+	
+	@Autowired
+	private MatchService matchService;
 
 	@GetMapping("/getmatches")
 	public List<Match> getAllMatches() {
@@ -28,14 +33,15 @@ public class MatchController {
 	}
 	
 	@GetMapping("/{matchId}")
-	public Match getSingleMatch(@PathVariable String matchId) {
-		return null;
+	public LineupResponse getSingleMatch(@PathVariable String matchId) {
+		
+		return matchService.getMatchLineup(Long.parseLong(matchId));
 	}
 	
 	@PostMapping("/create")
 	public Match createMatch(@RequestBody Match match) {
 		
-		matchRepository.save(match);
-		return matchRepository.findById(match.getId()).get();
+		
+		return matchService.createMatch(match);
 	}
 }
