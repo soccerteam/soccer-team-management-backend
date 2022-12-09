@@ -65,8 +65,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	
 	@Transactional
-	public UserVerifyResponse updateVerificationStatus(User user, String verificationCode) {
-		String newUsername = user.getUsername().trim();
+	public UserVerifyResponse updateVerificationStatus(String user, String verificationCode) {
+		String newUsername = user.trim();
 		User userDetails = userRepository.findByUsername(newUsername).get();
 		
 		

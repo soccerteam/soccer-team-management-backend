@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pace.soccerteam.beans.User;
 import com.pace.soccerteam.email.EmailService;
 import com.pace.soccerteam.security.AuthEntryPointExceptionHandler;
@@ -63,12 +64,18 @@ public class TestController {
 	  }
 	  
 	  @PostMapping("/verify")
-	  public UserVerifyResponse verify(@RequestBody User username, @RequestBody String verificationCode) {
+	  public UserVerifyResponse verify(@RequestBody ObjectNode json) {
+		  
+		  String username = json.get("username").asText();
+		  String vcode = json.get("verificationCode").asText();
+
+  
+		  //username, @RequestBody String verificationCode
 		  
 		  
 		
 		  //String vc = verificationCode.trim();
-		  return userDetailsService.updateVerificationStatus(username, verificationCode);
+		  return userDetailsService.updateVerificationStatus(username, vcode);
 	  }
 
 	  
